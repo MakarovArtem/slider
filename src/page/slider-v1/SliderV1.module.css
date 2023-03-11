@@ -1,0 +1,35 @@
+.slider{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imgContainer{
+  height: 600px;
+  border: 1px violet solid;
+}
+
+.ctrlContainer{
+  display: flex;
+}
+
+.dotContainer{
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: auto 15px;
+}
+
+.dot{
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  border: 2px solid black;
+  border-radius: 50%;
+  background-color: white;
+  transition: 0.5s ease;
+}
+
+.dotActive{
+  background-color: red;
+}
