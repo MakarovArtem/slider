@@ -47,6 +47,7 @@ export default function SliderV3() {
       setDotsShift(prev => prev - dotWidth);
       setCurrentPic(prev => prev + 1);
       setCurrentDot(prev => prev + 1);
+      console.log(slidesShift, 'from func')
     }
   };
 
@@ -64,6 +65,17 @@ export default function SliderV3() {
   useEffect(() => {
     setArrayForDots(getArray(picsLimit))
   }, [picsLimit])
+
+  useEffect(() => {
+    let timerId = setTimeout(function tick() {
+      rightButtonHandler();
+      console.log(slidesShift, 'from timeout');
+      timerId = setTimeout(tick, 2000);
+    }, 2000);
+    return () => {
+      clearTimeout(timerId)
+    }
+  }, [])
 
   return (
     <article className={style.slider}>
