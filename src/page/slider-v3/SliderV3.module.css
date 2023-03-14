@@ -1,0 +1,92 @@
+.slider{
+  width: 900px;
+  height: 700px;
+  border: 3px dashed darkblue;
+  border-radius: 15px;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.leftButton{
+  position: absolute;
+  top: 50%;
+  left: 80px;
+  z-index: 5;
+}
+
+.rightButton{
+  position: absolute;
+  top: 50%;
+  right: 80px;
+  z-index: 5
+}
+
+.windowSlides{
+  width: 650px;
+  height: 700px;
+  border: 3px dashed red;
+  border-radius: 15px;
+  padding: 50px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.slidesContainer{
+  display: flex;
+  transition: 1s ease;
+}
+
+.slide{
+  width: 600px;
+  height: 600px;
+}
+
+.image{
+  width: 600px;
+  height: 600px;
+  transition: 1s ease;
+}
+
+.imageActive{
+  border-radius: 35px;
+}
+
+.windowDots{
+  max-width: 77px;
+  min-width: 77px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid black;
+  z-index: 10;
+  position: absolute;
+  bottom: 20px;
+  left: 43%;
+  overflow: hidden;
+}
+
+.dotsContainer{
+  display: flex;
+  flex: 0 0 20px;
+  justify-content: space-between;
+  transition: 1s ease;
+
+}
+
+.dot{
+  cursor: pointer;
+  user-select: none;
+  min-width: 15px;
+  min-height: 15px;
+  background-color: white;
+  border: 2px solid brown;
+  border-radius: 50%;
+  transition: 1s ease;
+}
+
+.dotActive{
+  background-color: red;
+}

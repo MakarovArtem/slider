@@ -4,6 +4,6 @@ import style from './Button.module.css';
 export default function Button(props) {
 
   return(
-    <button className={style.button} onClick={props.onClick}>{props.children}</button>
+    <button className={`${style.button} ${props.className}`} onClick={props.onClick}>{props.children}</button>
   )
 }

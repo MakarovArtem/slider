@@ -1,16 +1,18 @@
 import React from 'react';
-import SliderDotted from './page/slider-v1/SliderV1.jsx';
-import SliderDottedV2 from './page/slider-v2/SliderV2.jsx';
+import SliderV1 from './page/slider-v1/SliderV1.jsx';
+import SliderV2 from './page/slider-v2/SliderV2.jsx';
+import SliderV3 from './page/slider-v3/SliderV3.jsx';
 
 export default function App() {
 
   return(
     <>
+      <h2 style={{textAlign: 'center'}}>Slider V3</h2>
+      <SliderV3/>
       <h2 style={{textAlign: 'center'}}>Slider V2</h2>
-      <SliderDottedV2/>
+      <SliderV2/>
       <h2 style={{textAlign: 'center'}}>Slider V1</h2>
-      <SliderDotted/>
-      {/* <h2>Slider thumb</h2> */}
+      <SliderV1/>
     </>
     // пусть будет слайдер с точками.
     // слайдер с миниатюрами изображений.
