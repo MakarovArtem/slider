@@ -37,7 +37,7 @@
 
 .slidesContainer{
   display: flex;
-  transition: 1s ease;
+  transition: 0.2s ease;
 }
 
 .slide{

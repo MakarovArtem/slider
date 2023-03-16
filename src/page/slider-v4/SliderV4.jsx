@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '../../components/button/Button.jsx';
 import { getArray } from '../../utils/funcs.js'
 
@@ -7,7 +7,6 @@ import style from "./SliderV4.module.css";
 export default function SliderV4({ slides, delay }) {
 
   const picsCount = slides.length;
-
   const [currentInd, setCurrentInd] = useState(0);
   const [shiftInd, setShiftInd] = useState(0);
 
@@ -51,19 +50,31 @@ export default function SliderV4({ slides, delay }) {
     setCurrentInd(shiftInd);
     console.log('from useeffect curInd: ', currentInd);
     console.log('from useeffect shiftInd: ', shiftInd);
-  }, [shiftInd])
+  }, [shiftInd]) //по клику по кнопке меняется shiftInd, 
+  //отчего выполняется логика смещения блока слайдов и точек
+
+  // useEffect(() => {
+  //   let timer = setInterval(() => {
+  //     if(currentInd == picsCount) return;// без депенденси будет листать бесконечно
+  //     setShiftInd(prev => prev + 1);//меняю shiftInd, страницы листаются
+  //     console.log('from interval curInd: ', currentInd);
+  //     console.log('from interval shiftInd: ', shiftInd);
+  //   }, delay);
+  //   return () => {
+  //     clearInterval(timer);
+  //   }
+  // }, [shiftInd])
 
   useEffect(() => {
-    let timer = setInterval(() => {
-      if(currentInd === picsCount) clearInterval(timer);
+    let timerId = setTimeout(() => {
+      if(currentInd == picsCount - 1) return;
       setShiftInd(prev => prev + 1);
-      console.log('from interval curInd: ', currentInd);
-      console.log('from interval shiftInd: ', shiftInd);
     }, delay);
+
     return () => {
-      clearInterval(timer)
+      clearTimeout(timerId);
     }
-  }, [])
+  }, [shiftInd, currentInd])
 
   return (
     <article className={style.slider}>
