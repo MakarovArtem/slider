@@ -88,47 +88,57 @@ export default function SliderV4({ slides, delay }) {
     }
   }, [leftButtonHandler, rightButtonHandler])
 
-  function mouseClickHandler(event) {
-    setDragStartCoordinates(event.clientX - slidesShift);// координаты первого клика мыши
-    setDragStartSlidesShift(slidesShift);// это предыдущее значение transform, до первого клика
-    console.log('DrShCord', event.clientX);
-  }
 
-  function mouseMoveHandler(event) {
-    if(dragStartCoordinates !== null) {// если кликнул т.е. появились координаты, то двигаю
-      setSlidesShift(event.clientX - dragStartCoordinates);// на то кол-во пикселей, которое получил
-      console.log('DrShCord', dragStartCoordinates);
+  useEffect(() => {
+    const mouseClickHandler = (event) => {
+      setDragStartCoordinates(event.clientX - slidesShift);// координаты первого клика мыши
+      setDragStartSlidesShift(slidesShift);// это предыдущее значение transform, до первого клика
     }
-  }
+  
+    const mouseMoveHandler = (event) => {
+      if(dragStartCoordinates !== null) {// если кликнул т.е. появились координаты, то двигаю
+        setSlidesShift(event.clientX - dragStartCoordinates);// на то кол-во пикселей, которое получил
+      }
+    }
+  
+    const mouseUnclickHandler = (event) => {
+      let shift = dragStartCoordinates + dragStartSlidesShift - event.clientX;
+      if(Math.abs(shift) < 200) {
+        setSlidesShift(dragStartSlidesShift);
+      } else if(shift > 0) {
+        setSlidesShift(dragStartSlidesShift);
+        rightButtonHandler();
+      } else if(shift < 0){
+        setSlidesShift(dragStartSlidesShift);
+        leftButtonHandler();
+      }
+      setDragStartCoordinates(null);
+      setDragStartSlidesShift(null);
+    }
 
-  function mouseUnclickHandler(event) {
-    let shift = dragStartCoordinates + dragStartSlidesShift - event.clientX;
-    if(Math.abs(shift) < 200) {
-      setSlidesShift(dragStartSlidesShift);
-    } else if(shift > 0) {
-      setSlidesShift(dragStartSlidesShift);
-      rightButtonHandler();
-    } else if(shift < 0){
-      setSlidesShift(dragStartSlidesShift);
-      leftButtonHandler();
+    const slide = document.getElementById('slider');
+
+    slide.addEventListener('mousedown', mouseClickHandler);
+    slide.addEventListener('mousemove', mouseMoveHandler);
+    slide.addEventListener('mouseup', mouseUnclickHandler);
+
+    return () => {
+      slide.removeEventListener('mousedown', mouseClickHandler);
+      slide.removeEventListener('mousemove', mouseMoveHandler);
+      slide.removeEventListener('mouseup', mouseUnclickHandler);
     }
-    setDragStartCoordinates(null);
-    setDragStartSlidesShift(null);
-  }
+  }, [slidesShift, dragStartCoordinates, dragStartSlidesShift])
+  
 
   return (
     <article className={style.slider}>
       <Button className={style.leftButton} onClick={leftButtonHandler}>{'<<'}</Button>
       <Button className={style.rightButton} onClick={rightButtonHandler}>{'>>'}</Button>
-      <div className={style.windowSlides}>
+      <div id='slider' className={style.windowSlides}>
         <div style={{transform: `translateX(${slidesShift}px)`}} className={style.slidesContainer}>
           {
             slides.map((slide, ind) => 
-              <div key={slide.url} className={style.slide}
-                onMouseDown={mouseClickHandler}
-                onMouseMove={mouseMoveHandler}
-                onMouseUp={mouseUnclickHandler}
-              >
+              <div key={slide.url} className={style.slide}>
                 <img className={ind === currentInd ? 
                   `${style.image} ${style.imageActive}` :
                   style.image} src={slide.url}>
