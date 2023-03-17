@@ -37,7 +37,7 @@
 
 .slidesContainer{
   display: flex;
-  transition: 0.2s ease;
+  transition: 1s ease-out;
 }
 
 .slide{
@@ -53,6 +53,8 @@
 
 .imageActive{
   border-radius: 35px;
+  -webkit-user-drag: none;
+  cursor: pointer;
 }
 
 .windowDots{

@@ -11,7 +11,7 @@ export default function App() {
   return(
     <>
       <h2 style={{textAlign: 'center'}}>Slider V4</h2>
-      <SliderV4 slides={slides} delay={1000}/>
+      <SliderV4 slides={slides} delay={50000}/>
       <h2 style={{textAlign: 'center'}}>Slider V3</h2>
       <SliderV3/>
       <h2 style={{textAlign: 'center'}}>Slider V2</h2>
@@ -19,11 +19,5 @@ export default function App() {
       <h2 style={{textAlign: 'center'}}>Slider V1</h2>
       <SliderV1/>
     </>
-    // пусть будет слайдер с точками.
-    // слайдер с миниатюрами изображений.
-    // да еще и кликабельный.
-    // да еще и с кнопками слева справа, 
-    // которые будут слушать клавиатуру - 
-    // стрелки влево и вправо + цифры с 1 до 9 по номеру слайда
   )
 }
