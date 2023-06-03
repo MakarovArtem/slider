@@ -9,7 +9,7 @@ const defaultState = {
 };
 
 // reducer
-export const reducerOne = ( state = defaultState, action ) => {
+export const containerReducer = ( state = defaultState, action ) => {
   switch (action.type) {
     case SET_SLIDES_CONTAINER_SHIFT:
       return {...state, slidesContainerShift: action.playload}

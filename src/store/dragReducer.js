@@ -9,7 +9,7 @@ const defaultState = {
 };
 
 // reducer
-export const reducerOne = ( state = defaultState, action ) => {
+export const dragReducer = ( state = defaultState, action ) => {
   switch (action.type) {
     case SET_DRAG_START_SLIDES_CONTAINER_SHIFT:
       return {...state, dragStartSlidesContainerShift: action.playload}

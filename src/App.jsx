@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import store from './store/index.js';
+import { store } from './store/index.js';
 import SliderV1 from './page/slider-v1/SliderV1.jsx';
 import SliderV2 from './page/slider-v2/SliderV2.jsx';
 import SliderV3 from './page/slider-v3/SliderV3.jsx';

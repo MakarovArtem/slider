@@ -9,7 +9,7 @@ const defaultState = {
 };
 
 // reducer
-export const reducerOne = ( state = defaultState, action ) => {
+export const slideReducer = ( state = defaultState, action ) => {
   switch (action.type) {
     case SET_CURRENT_SLIDE_IND:
       return {...state, currentSlideInd: action.playload}

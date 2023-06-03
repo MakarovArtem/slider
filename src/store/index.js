@@ -1,8 +1,13 @@
-import { configureStore, combineReducers } from 'redux';
-import slideReducer from './slideReducer.js';
-import containerReducer from './containerReducer.js';
-import dragReducer from './dragReducer.js';
+import { configureStore } from '@reduxjs/toolkit';
+import { slideReducer } from './slideReducer.js';
+import { containerReducer } from './containerReducer.js';
+import { dragReducer } from './dragReducer.js';
 
-const rootReducer = combineReducers(slideReducer, containerReducer, dragReducer);
 
-export const store = configureStore(rootReducer);
+export const store = configureStore({
+  reducer: {
+    slide: slideReducer,
+    container: containerReducer,
+    drag: dragReducer,
+  }
+});
