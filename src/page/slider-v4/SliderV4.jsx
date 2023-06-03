@@ -3,25 +3,35 @@ import Button from '../../components/button/Button.jsx';
 import { getArray } from '../../utils/funcs.js';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { currentSlideIndAction, shiftToSlideIndAction } from '../../store/slideReducer.js';
+import { slidesContainerShiftAction, dotsContainerShiftAction} from '../../store/containerReducer.js';
+import { dragStartSlidesContainerShiftAction, dragStartCoordinatesAction} from '../../store/dragReducer.js';
+
+
+import { dotArrayAction } from '../../store/dotArrayReducer.js';
+
+
 import style from "./SliderV4.module.css";
 
 export default function SliderV4({ slides, delay }) {
+
+  const dispatch = useDispatch();
+  
+  const dotsArray = useSelector(state => state.dot);
+  
+  const currentSlideInd = useSelector(state => state.slide.currentSlideInd);
+  const shiftToSlideInd = useSelector(state => state.slide.shiftToSlideInd);
+
+  const slidesContainerShift = useSelector(state => state.container.slidesContainerShift);
+  const dotsContainerShift = useSelector(state => state.container.dotsContainerShift);
+
+  const dragStartSlidesContainerShift = useSelector(state => state.drag.dragStartSlidesContainerShift);
+  const dragStartCoordinates = useSelector(state => state.drag.dragStartCoordinates);
+
 // константы
   const slideWidth = 600;
   const dotWidth = 15;
   const picsCount = slides.length;
-// индекс текущего слайда и индекс слайда для перемотки
-  const [currentSlideInd, setCurrentSlideInd] = useState(0);
-  const [shiftToSlideInd, setShiftToSlideInd] = useState(0);
-// значение смещения контейнера слайдов и контейнера точек
-  const [slidesContainerShift, setSlidesContainerShift] = useState(0);
-  const [dotsContainerShift, setDotsContainerShift] = useState(dotWidth * 2);
-// массив для отрисовки точек
-  const [arrayForDots, setArrayForDots] = useState([]);
-// смещение контейнера слайдов в момент начала пролистывания с помощью drag'n'drop
-// и координаты клика мыши
-  const [dragStartSlidesContainerShift, setDragStartSlidesContainerShift] = useState(null);
-  const [dragStartCoordinates, setDragStartCoordinates] = useState(null);
 
 // функции проверки возможности пролистывания слайдов 
   const isLeftShiftAllowed = () => {
@@ -34,43 +44,43 @@ export default function SliderV4({ slides, delay }) {
 // функции для пролистывания слайдов
   const prevSlide = () => {
     if(isLeftShiftAllowed()) {
-      setShiftToSlideInd(prev => prev - 1);
+      dispatch(shiftToSlideIndAction(shiftToSlideInd - 1));
     } else {
-      setShiftToSlideInd(() => picsCount - 1);
+      dispatch(shiftToSlideIndAction(picsCount - 1));
     }
   };
   const nextSlide = () => {
     if(isRightShiftAllowed()) {
-      setShiftToSlideInd(prev => prev + 1);
+      dispatch(shiftToSlideIndAction(shiftToSlideInd + 1));
     } else {
-      setShiftToSlideInd(() => 0);
+      dispatch(shiftToSlideIndAction(0));
     }
   };
 
 // функция для установки индекса для пролистывания слайдов по клику на точки
   const dotHandler = (index) => {
-    setShiftToSlideInd(index);
+    dispatch(shiftToSlideIndAction(index));
   };
 
 // создаю массив для отрисовки точек
   useEffect(() => {
-    setArrayForDots(getArray(picsCount));
+    dispatch(dotArrayAction(getArray(picsCount)));
   }, [picsCount])
 
-// логика пролистывания
+// логика пролистывания 
   useEffect(() => {
-    setSlidesContainerShift(prev => prev + slideWidth * (currentSlideInd - shiftToSlideInd));
-    setDotsContainerShift(prev => prev + dotWidth * (currentSlideInd - shiftToSlideInd));
-    setCurrentSlideInd(shiftToSlideInd);
+    dispatch(slidesContainerShiftAction(slidesContainerShift + slideWidth * (currentSlideInd - shiftToSlideInd)))
+    dispatch(dotsContainerShiftAction(dotsContainerShift + dotWidth * (currentSlideInd - shiftToSlideInd)))
+    dispatch(currentSlideIndAction(shiftToSlideInd))
   }, [shiftToSlideInd])
 
 // логика автоматического пролистывания
   useEffect(() => {
     let timerId = setTimeout(() => {
       if(currentSlideInd == picsCount - 1) {
-        setShiftToSlideInd(() => 0);
+        dispatch(shiftToSlideIndAction(0));
       } else {
-        setShiftToSlideInd(prev => prev + 1);
+        dispatch(shiftToSlideIndAction(shiftToSlideInd + 1));
       }
     }, delay);
 
@@ -100,29 +110,29 @@ export default function SliderV4({ slides, delay }) {
 // логика пролистывания с помощью drag'n'drop
   useEffect(() => {
     const mouseDownHandler = (event) => {
-      setDragStartCoordinates(event.clientX - slidesContainerShift);
-      setDragStartSlidesContainerShift(slidesContainerShift);
+      dispatch(dragStartCoordinatesAction(event.clientX - slidesContainerShift));
+      dispatch(dragStartSlidesContainerShiftAction(slidesContainerShift));
     }
 
     const mouseMoveHandler = (event) => {
       if(dragStartCoordinates !== null) {
-        setSlidesContainerShift(event.clientX - dragStartCoordinates);
+        dispatch(slidesContainerShiftAction(event.clientX - dragStartCoordinates));
       }
     }
 
     const mouseUpHandler = (event) => {
       let shift = dragStartCoordinates + dragStartSlidesContainerShift - event.clientX;
       if(Math.abs(shift) < 200) {
-        setSlidesContainerShift(dragStartSlidesContainerShift);
+        dispatch(slidesContainerShiftAction(dragStartSlidesContainerShift));
       } else if(shift > 0) {
-        setSlidesContainerShift(dragStartSlidesContainerShift);
+        dispatch(slidesContainerShiftAction(dragStartSlidesContainerShift));
         nextSlide();
       } else if(shift < 0){
-        setSlidesContainerShift(dragStartSlidesContainerShift);
+        dispatch(slidesContainerShiftAction(dragStartSlidesContainerShift));
         prevSlide();
       }
-      setDragStartCoordinates(null);
-      setDragStartSlidesContainerShift(null);
+      dispatch(dragStartCoordinatesAction(null));
+      dispatch(dragStartSlidesContainerShiftAction(null));
     }
 
     const slider = document.getElementById('slider');
@@ -159,7 +169,7 @@ export default function SliderV4({ slides, delay }) {
         <div className={style.windowDots}>
           <div style={{transform: `translateX(${dotsContainerShift}px)`}} className={style.dotsContainer}>
             {
-              arrayForDots.map((number, ind) => 
+              dotsArray.map((number, ind) => 
                 <div key={ind} onClick={() => dotHandler(ind)}
                   className={ind === currentSlideInd ? 
                   `${style.dot} ${style.dotActive}` :

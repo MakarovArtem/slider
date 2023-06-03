@@ -21,5 +21,5 @@ export const dragReducer = ( state = defaultState, action ) => {
 }
 
 // action creators
-export const dragStartSlidesContainerShift = (playload) => ({ type: SET_DRAG_START_SLIDES_CONTAINER_SHIFT, playload })
-export const dragStartCoordinates = (playload) => ({ type: SET_DRAG_START_COORDINATES, playload })
+export const dragStartSlidesContainerShiftAction = (playload) => ({ type: SET_DRAG_START_SLIDES_CONTAINER_SHIFT, playload })
+export const dragStartCoordinatesAction = (playload) => ({ type: SET_DRAG_START_COORDINATES, playload })
