@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Button from '../../components/button/Button.jsx';
-import { getArray } from '../../utils/funcs.js'
+import { getArray } from '../../utils/funcs.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 import style from "./SliderV4.module.css";
 
